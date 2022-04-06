@@ -1,0 +1,11 @@
++ 1. matrix object created
+2. return BadMatrixException if wrong data provided
+    2.1 rows don't have equal length
+    2.2 incorrect value instead of int
++ 3. __bool__ returns false if each element == 0
++ 4. __str__ method prints matrix
+5. __add__ sum 2 matrices
+    5.1 raises BadMatrixException when matrices are of different size
+    5.2 returns sum
+7. __mul__ multiplies 2 matrices
+8. __mul__ throws BadMatrixExceprion if matrices len(matr_A columns) != len(matr_B rows)
