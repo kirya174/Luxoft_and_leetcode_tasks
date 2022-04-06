@@ -18,26 +18,6 @@ def test_matrix_created():
     assert type(matrix) is usermatrix.Matrix
 
 
-@pytest.mark.skip(reason='not implemented yet')
-def test_matrix_created_with_correct_data():
-    matrix = create_matrix_object(3, 3)
-    assert len(matrix) == 3 and len(matrix[0]) == 3
-
-
-# @pytest.mark.parametrize("data", [
-#     ((1, 2), (1, 2), (1, 2, 3)),
-#     ((1, 2), 1, (1, 2)),
-#     ((1, 2), (1, "2"), (None, 2)),
-#     tuple(tuple(1))
-# ])
-# def test_exception_raised_when_rows_not_equal_length(data):
-#     # data = ((1, 2), (1, 2), (1, 2, 3))
-#     try:
-#         matrix = usermatrix.get_object(data)
-#         assert False
-#     except matrix_exception.BadMatrixException:
-#         assert True
-
 @pytest.mark.parametrize("data, expected", [
     (((1, 2), (1, 2), (1, 2)), True),
     (((0, 0), (0, 0), (0, 0)), False),
@@ -46,12 +26,14 @@ def test_bool_returns_correct_value(data, expected):
     assert bool(usermatrix.get_object(tuple(data))) == expected
 
 
+@pytest.fixture()
 @pytest.mark.parametrize("data, result", [
     (((1, 2), (1, 2), (1, 2)), f'1 2\n1 2\n1 2\n'),
     (((0, 0), (0, 0), (0, 0)), f'0 0\n0 0\n0 0\n'),
 ])
-def test_print_matrix(data, result):
+def test_print_matrix(data, result, capfd):
     matrix = usermatrix.get_object(tuple(data))
+    capfd.readouterr()
     assert result == matrix.__str__()
 
 
@@ -65,11 +47,11 @@ def test_print_matrix(data, result):
     (((0, 0, 1), (0, 0, 1), (0, 0, 2)),
      ((1, 2, 1), (2, 2, 1), (2, 2, 2)),
      f'1 2 2\n2 2 2\n2 2 4\n'),
-    (((1), (1), (1)),
-     ((2), (2), (2)),
+    (((1,), (1,), (1,)),
+     ((2,), (2,), (2,)),
      f'3\n3\n3\n'),
-    (((1, 2)),
-     ((2, 3)),
+    (((1, 2),),
+     ((2, 3),),
      '3 5\n'),
 ])
 def test_add_matrices_correct(data1, data2, result):
@@ -81,10 +63,10 @@ def test_add_matrices_correct(data1, data2, result):
 @pytest.mark.parametrize("data1, data2", [
     (((1, 2), (1, 2), (1, 2)),
      ((1, 2), (1, 2), (1, 2), (1, 2))),
-    (((0, 0), (0, 0), (0, 0)),
-     ((1, 2), (1), (1))),
     (((0, 0, 1), (0, 0, 1), (0, 0, 2)),
      ((1, 2), (2, 2), (2, 2))),
+    (((1, 2, 3),),
+     ((1,), (2,), (3,))),
 ])
 def test_add_matrices_of_diff_sizes(data1, data2):
     matrix1 = usermatrix.get_object(tuple(data1))
@@ -94,3 +76,27 @@ def test_add_matrices_of_diff_sizes(data1, data2):
         assert False
     except matrix_exception.BadMatrixException:
         assert True
+
+
+@pytest.mark.parametrize("data1, data2, result", [
+    (((0, 0), (0, 0), (0, 0)),
+     ((0, 0), (0, 0), (0, 0)),
+     True),
+    (((0, 0, 1), (0, 0, 1), (0, 0, 2)),
+     ((1, 2, 1), (2, 2, 1), (2, 2, 2)),
+     f'2 2 2\n2 2 2\n4 4 4\n'),
+    (((1,), (1,), (1,)),
+     ((2,), (2,), (2,)),
+     f'6\n'),
+    (((1, 2),),
+     ((2,), (3,)),
+     '8\n'),
+])
+def test_mul_matrices(data1, data2, result):
+    matrix1 = usermatrix.get_object(tuple(data1))
+    matrix2 = usermatrix.get_object(tuple(data2))
+    try:
+        mul = (matrix1 * matrix2).__str__()
+        assert mul == result
+    except matrix_exception.BadMatrixException:
+        assert result
