@@ -55,5 +55,23 @@ def insert_schedule(schedule):
             return cursor.fetchone()[0]
 
 
+def get_all_schedules():
+    with closing(psycopg2.connect(**config.dbparam)) as db:
+        with db.cursor() as cursor:
+            sql_query = """
+            SELECT departure.title, destination.title, departure_time, arrival_time
+            FROM public.schedule
+            LEFT JOIN public.stations as departure ON departure.id = public.schedule.id_departure
+            LEFT JOIN public.stations as destination ON destination.id = public.schedule.id_destination
+            """
+            cursor.execute(sql_query)
+            db.commit()
+            recordset = cursor.fetchall()
+            return recordset
+
+
 # print(insert_stations(["SPB", "Chelyabinsk"]))
-print(insert_schedule((1, 2, datetime(2022, 4, 15), datetime(2022, 4, 16))))
+# print(insert_schedule((1, 2, datetime(2022, 4, 15), datetime(2022, 4, 16))))
+schedules = get_all_schedules()
+for c in schedules:
+    print(f"departure {c[0]} {c[2]} arrival {c[1]} {c[3]}")
