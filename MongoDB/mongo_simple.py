@@ -34,5 +34,5 @@ person1 = Person("Ivan", "Ivanov", 43)
 person2 = Person("Vasya", "Dedov", 20)
 person3 = Person("Lenin", "LiveLikeLenin", 200)
 
-ids = save_documents(person1, person2, person3)
-print(ids.inserted_ids)
+# ids = save_documents(person1, person2, person3)
+# print(ids.inserted_ids)
