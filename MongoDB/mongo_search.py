@@ -22,6 +22,18 @@ def print_document_by_id(id):
         print(f"firstname = {entity['first_name']}, lastname = {entity['last_name']}")
         
 
+def print_document_by_id_without_fields(id):
+    query = {'_id': ObjectId(id)}
+    with MongoClient(config.mongodb) as client:
+        db = client[config.database]
+        entities = db.entities
+        entity = entities.find_one(query, {'_id': 0, 'first_name': 1, 'last_name': 1})
+        print(entity)
+
+
 print_all()
 print_document_by_id("625e6ad796fbe33ab57144aa")
 print_document_by_id("625e6ad796fbe33ab57144ac")
+print('-----------------------------------')
+print_document_by_id_without_fields("625e6ad796fbe33ab57144aa")
+print_document_by_id_without_fields("625e6ad796fbe33ab57144ac")
