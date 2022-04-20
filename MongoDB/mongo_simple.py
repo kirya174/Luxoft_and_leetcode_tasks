@@ -4,9 +4,9 @@ import config
 
 
 def save_document(doc):
-    with MongoClient(config.mongodb) as client:
-        db = client[config.database]
-        entities = db.entities
+    with MongoClient(config.mongodb) as client: # Подключение к БД
+        db = client[config.database]  # Подключение к коллекции внутри БД (в нашем случае sandbox)
+        entities = db.entities  # "Интерфейс" для работы с элементами коллекции
         result = entities.insert_one(doc.__dict__)
         return result
 
@@ -26,13 +26,13 @@ class Person:
         self.age = age
 
 
-# peter = Person("Peter I", "Romanov", 30)
-# save_document(peter)
-# print("Complete")
+peter = Person("Peter I", "Romanov", 30)
+save_document(peter)
+print("Complete")
 
 person1 = Person("Ivan", "Ivanov", 43)
 person2 = Person("Vasya", "Dedov", 20)
 person3 = Person("Lenin", "LiveLikeLenin", 200)
 
-# ids = save_documents(person1, person2, person3)
-# print(ids.inserted_ids)
+ids = save_documents(person1, person2, person3)
+print(ids.inserted_ids)

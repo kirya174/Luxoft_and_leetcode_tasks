@@ -1,6 +1,5 @@
 from bson import ObjectId
 import config
-import pymongo
 from pymongo import MongoClient
 
 
@@ -66,16 +65,17 @@ def increase_age(id):
         print(updated_document)
 
 
-print_all()
-print('-----------------------------------')
-print_document_by_id("625e6ad796fbe33ab57144aa")
-print_document_by_id("625e6ad796fbe33ab57144ac")
-print('-----------------------------------')
-print_document_by_id_without_fields("625e6ad796fbe33ab57144aa")
-print_document_by_id_without_fields("625e6ad796fbe33ab57144ac")
-print('-----------------------------------')
-print_document_by_gt(29)
-print('-----------------------------------')
-print_documents_by_multiple_conditions()
-print('-----------------------------------')
-increase_age("625e6ad796fbe33ab57144ab")
+if __name__ == '__main__':
+    print_all()
+    print('-----------------------------------')
+    print_document_by_id("625e6ad796fbe33ab57144aa")
+    print_document_by_id("625e6ad796fbe33ab57144ac")
+    print('-----------------------------------')
+    print_document_by_id_without_fields("625e6ad796fbe33ab57144aa")
+    print_document_by_id_without_fields("625e6ad796fbe33ab57144ac")
+    print('-----------------------------------')
+    print_document_by_gt(29)
+    print('-----------------------------------')
+    print_documents_by_multiple_conditions()
+    print('-----------------------------------')
+    increase_age("625e6ad796fbe33ab57144ab")
