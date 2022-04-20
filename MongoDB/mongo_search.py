@@ -20,7 +20,7 @@ def print_document_by_id(id):
         entity = entities.find_one(query)
         print(entity)
         print(f"firstname = {entity['first_name']}, lastname = {entity['last_name']}")
-        
+
 
 def print_document_by_id_without_fields(id):
     query = {'_id': ObjectId(id)}
@@ -31,9 +31,35 @@ def print_document_by_id_without_fields(id):
         print(entity)
 
 
+def print_document_by_gt(age):
+    query = {'age': {"$gt": age}}
+    with MongoClient(config.mongodb) as client:
+        db = client[config.database]
+        entities = db.entities
+        documents = entities.find(query)
+        for document in documents:
+            print(document)
+
+
+def print_documents_by_multiple_conditions():
+    query = {"$and": [{"age": {"$gt": 20, "$lt": 45}},
+                      {"first_name": {"$eq": "Ivan"}}]}
+    with MongoClient(config.mongodb) as client:
+        db = client[config.database]
+        entities = db.entities
+        documents = entities.find(query)
+        for document in documents:
+            print(document)
+
+
 print_all()
+print('-----------------------------------')
 print_document_by_id("625e6ad796fbe33ab57144aa")
 print_document_by_id("625e6ad796fbe33ab57144ac")
 print('-----------------------------------')
 print_document_by_id_without_fields("625e6ad796fbe33ab57144aa")
 print_document_by_id_without_fields("625e6ad796fbe33ab57144ac")
+print('-----------------------------------')
+print_document_by_gt(29)
+print('-----------------------------------')
+print_documents_by_multiple_conditions()
