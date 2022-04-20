@@ -52,6 +52,20 @@ def print_documents_by_multiple_conditions():
             print(document)
 
 
+def increase_age(id):
+    search_query = {'_id': ObjectId(id)}
+    with MongoClient(config.mongodb) as client:
+        db = client[config.database]
+        entities = db.entities
+        document = entities.find_one(search_query)
+        print(document)
+        update_query = {"$set":
+                            {"age": document["age"] + 1}}
+        entities.update_one(search_query, update_query)
+        updated_document = entities.find_one(search_query)
+        print(updated_document)
+
+
 print_all()
 print('-----------------------------------')
 print_document_by_id("625e6ad796fbe33ab57144aa")
@@ -63,3 +77,5 @@ print('-----------------------------------')
 print_document_by_gt(29)
 print('-----------------------------------')
 print_documents_by_multiple_conditions()
+print('-----------------------------------')
+increase_age("625e6ad796fbe33ab57144ab")
