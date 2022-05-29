@@ -13,7 +13,7 @@ def create_node(vals: list) -> ListNode:
 
 node1 = create_node([1, 2, 3, 4, 5])
 node2 = create_node([3, 7, 9, 3, 5, 8, 0])
-
+head = create_node([1, 2, 3, 4, 5])
 
 class Solution:
     """ returns middle node of a linked list """
@@ -44,8 +44,30 @@ class Solution:
         node = create_node(vals)
         return node
 
+    def reverseList(self, head):
+        # vals = []
+        # node = head
+        # while node is not None:
+        #     vals.append(node.val)
+        #     node = node.next
+        # node = create_node(vals)
+
+        previous = None
+        current = head
+        while current:
+            next = current.next
+            current.next = previous
+            previous = current
+            current = next
+        return previous
+
+
+
 
 # print(Solution().middleNode(node))
 
-node1 = Solution().removeNthFromEnd(node1, 2)
-node2 = Solution().removeNthFromEnd(node2, 1)
+# node1 = Solution().removeNthFromEnd(node1, 2)
+# node2 = Solution().removeNthFromEnd(node2, 1)
+
+
+print(Solution().reverseList(head))  # [5,4,3,2,1]
